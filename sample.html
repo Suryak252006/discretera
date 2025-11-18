@@ -1,0 +1,1442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mentiby — Internships for Indian CSE students</title>
+  <style>
+    /* ===== Variables & base ===== */
+    :root{
+      --bg:#ffffff;
+      --text:#0f1724;
+      --muted:#6b7280;
+      --indigo:#4f46e5; /* indigo-600 */
+      --purple:#7c3aed; /* purple-600 */
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(15,23,36,0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      font-size:16px;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    /* ===== LAYOUT ===== */
+    .container{max-width:1200px; margin:0 auto; padding:0 24px}
+    header.fixed{
+      position:fixed; left:0; right:0; top:16px;
+      z-index:40;
+      padding:0 8px;
+    }
+    .header-wrapper{
+      display:flex; 
+      justify-content:center; 
+      align-items:center; 
+      position:relative;
+      width:100%;
+    }
+    
+    /* Desktop logo - positioned absolutely on the left */
+    .brand-desktop{
+      position:absolute; 
+      left:20px; 
+      display:flex; 
+      align-items:center; 
+      gap:12px;
+      width:140px;
+      height:48px;
+      padding-left:12px;
+    }
+    
+    /* Center navigation pill */
+    .header-inner{
+      background:white;
+      border-radius:24px;
+      box-shadow: 0 4px 20px rgba(15,23,36,0.08);
+      display:flex; 
+      flex-direction:column;
+      width:100%;
+    }
+    
+    .header-content{
+      display:flex; 
+      align-items:center; 
+      justify-content:space-between; 
+      padding:4px 4px;
+    }
+    
+    /* Mobile logo inside pill */
+    .brand{
+      display:flex; 
+      align-items:center; 
+      gap:12px;
+      width:120px;
+      height:48px;
+      padding-left:12px;
+    }
+    
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background:linear-gradient(135deg,var(--indigo),var(--purple));
+      color:white; display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:18px;
+      box-shadow: 0 6px 20px rgba(99,102,241,0.12);
+    }
+    .brand .meta{line-height:1}
+    .brand .meta .small{font-size:12px; color:var(--muted)}
+
+    nav.desktop{
+      display:flex; 
+      gap:8px; 
+      align-items:center;
+      padding:4px 8px;
+    }
+    nav.desktop a{
+      font-size:15px; 
+      color:var(--text); 
+      opacity:0.9;
+      padding:12px 12px;
+      border-radius:24px;
+      transition:all 0.3s ease;
+      font-weight:400;
+      letter-spacing:-0.01em;
+    }
+    nav.desktop a:hover{
+      opacity:1;
+      background:rgba(0,0,0,0.05);
+    }
+    
+    .btn{
+      display:inline-flex; 
+      align-items:center; 
+      gap:8px; 
+      padding:8px 14px; 
+      border-radius:24px;
+      cursor:pointer; 
+      border:0; 
+      font-weight:600;
+      transition:all 0.3s ease;
+      font-size:14px;
+    }
+    .btn.primary{
+      background:#151619; 
+      color:white; 
+      padding:8px 8px 8px 24px;
+      box-shadow:0 2px 8px rgba(21,22,25,0.15);
+      letter-spacing:-0.01em;
+      white-space:nowrap;
+    }
+    .btn.primary:hover{
+      background:#2a2c32;
+    }
+    .btn-icon{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:#333437;
+      border:1px solid #545557;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .btn.ghost{background:transparent; border:1px solid rgba(15,23,36,0.06)}
+
+    /* Desktop CTA button - positioned absolutely on the right */
+    .cta-desktop{
+      position:absolute;
+      right:20px;
+      padding-left:12px;
+    }
+
+    /* mobile */
+    .menu-toggle{
+      display:none; 
+      background:#f3f4f6; 
+      border:0;
+      border-radius:50%; 
+      width:40px;
+      height:40px;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      cursor:pointer;
+    }
+    
+    @media (max-width:900px){
+      header.fixed{top:16px}
+      .header-wrapper{padding:0}
+      
+      /* Hide desktop elements */
+      .brand-desktop{display:none}
+      .cta-desktop{display:none}
+      nav.desktop{display:none}
+      
+      /* Show mobile elements */
+      .brand{display:flex}
+      .menu-toggle{display:flex}
+      
+      /* Adjust pill for mobile */
+      .header-inner{
+        border-radius:24px;
+      }
+      .header-content{
+        justify-content:space-between;
+      }
+    }
+    
+    @media (min-width:901px){
+      /* Hide mobile logo */
+      .brand{display:none}
+      
+      /* Show desktop elements */
+      .brand-desktop{display:flex}
+      .cta-desktop{display:flex}
+      nav.desktop{display:flex}
+      
+      /* Center the pill on desktop */
+      .header-inner{
+        max-width:fit-content;
+        border-radius:9999px;
+      }
+    }
+    
+    @media (min-width:1024px){
+      .brand-desktop{left:60px}
+      .cta-desktop{right:60px}
+      nav.desktop a:first-child{
+        display:inline-flex;
+      }
+    }
+
+    /* ===== HERO ===== */
+    main{padding-top:96px}
+    .hero{display:grid; grid-template-columns:1fr 520px; gap:40px; align-items:center; padding:80px 0}
+    .hero h1{font-size:36px; line-height:1.03; margin:0; font-weight:800}
+    .hero p{color:var(--muted); max-width:52ch; margin-top:12px}
+    .hero .ctas{margin-top:20px; display:flex; gap:12px; align-items:center}
+    .cta-primary{
+      background:linear-gradient(90deg,var(--indigo),var(--purple));
+      color:white; padding:12px 18px; border-radius:14px; font-weight:700; box-shadow:var(--shadow);
+      transform:translateY(0); transition:transform 180ms ease;
+    }
+    .cta-primary:hover{transform:translateY(-3px)}
+    .cta-outline{padding:10px 14px; border-radius:14px; border:1px solid #e6e7ee; color:var(--muted)}
+    .hero-features{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px}
+    .feature-pill{background:#fbfbfe; border: 1px solid #e6e7ee; padding:10px; border-radius:12px; text-align:center; font-size:14px; color:var(--muted)}
+
+    /* right card */
+    .card-wrap{position:relative}
+    .card{
+      background: linear-gradient(180deg,#eef2ff,#f5f3ff);
+      border-radius:24px; padding:20px; box-shadow:0 18px 50px rgba(79,70,229,0.08);
+      transform:rotate(-3deg);
+    }
+    .card .top{display:flex; align-items:center; justify-content:space-between}
+    .card h4{margin:0; font-size:14px; color:var(--muted)}
+    .card .cohort{font-weight:700; font-size:16px}
+    .jobs-list{margin-top:14px; display:flex; flex-direction:column; gap:12px}
+    .job{
+      background:var(--card); border-radius:14px; padding:12px; display:flex; align-items:center; justify-content:space-between;
+      box-shadow:0 6px 18px rgba(15,23,36,0.04)
+    }
+    .job .meta{font-size:13px; color:var(--muted)}
+    .see-all{display:block; text-align:center; padding:8px 10px; border-radius:10px; border:1px dashed #e9e9f4; margin-top:12px; font-size:14px; color:var(--muted)}
+
+    .glow-blob{
+      position:absolute; right:-36px; bottom:-24px; width:140px; height:140px; border-radius:999px;
+      background:linear-gradient(135deg,#6366f1,#7c3aed); opacity:.18; filter:blur(20px);
+    }
+
+    /* Down arrow */
+    .scroll-indicator{
+      display:flex;
+      justify-content:center;
+      padding:20px 0;
+      animation:bounce 2s infinite;
+    }
+    .scroll-indicator svg{
+      width:32px;
+      height:32px;
+      color:var(--indigo);
+      opacity:0.6;
+      cursor:pointer;
+      transition:opacity 0.3s ease;
+    }
+    .scroll-indicator svg:hover{
+      opacity:1;
+    }
+    @keyframes bounce{
+      0%, 20%, 50%, 80%, 100%{
+        transform:translateY(0);
+      }
+      40%{
+        transform:translateY(-10px);
+      }
+      60%{
+        transform:translateY(-5px);
+      }
+    }
+
+    /* ===== SECTIONS ===== */
+    section {padding:36px 0}
+    .section-title{font-size:20px; font-weight:700}
+    .section-sub{color:var(--muted); margin-top:6px}
+
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
+    .grid-4{
+      display:grid; 
+      grid-template-columns:repeat(3,1fr); 
+      gap:18px; 
+      margin-top:18px;
+    }
+    .grid-4 .card-sm:nth-child(4){
+      grid-column: 2;
+    }
+    .card-sm{
+      background:var(--card); 
+      padding:18px; 
+      border-radius:14px; 
+      border: 1px solid #e6e7ee;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .card-sm:hover{
+      transform:translateY(-6px);
+      box-shadow:0 12px 24px rgba(79,70,229,0.15), 0 0 20px rgba(79,70,229,0.08);
+      border-color:var(--indigo);
+    }
+    .card-sm:hover .card-expanded-content{
+      max-height:200px;
+    }
+    .card-sm .icon{
+      font-size:32px;
+      margin-bottom:12px;
+      transition:transform 0.3s ease;
+    }
+    .card-sm:hover .icon{
+      transform:scale(1.1) rotate(5deg);
+    }
+    .card-expanded-content{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      margin-top:12px;
+    }
+    .card-sm.expanded{
+      padding-bottom:24px;
+    }
+    .checklist{
+      list-style:none;
+      padding:0;
+      margin:8px 0 0;
+    }
+    .checklist li{
+      padding:6px 0;
+      font-size:13px;
+      color:#10b981;
+    }
+    .checklist li:before{
+      content:'✔️ ';
+      margin-right:8px;
+    }
+    .view-examples-btn{
+      margin-top:12px;
+      padding:6px 12px;
+      background:var(--indigo);
+      color:white;
+      border-radius:8px;
+      font-size:13px;
+      border:0;
+      cursor:pointer;
+      opacity:0;
+      transition:opacity 0.3s ease;
+    }
+    .card-sm:hover .view-examples-btn{
+      opacity:1;
+    }
+
+    /* OPPS grid */
+    .opps-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:16px}
+    .opp{
+      background:var(--card); 
+      padding:18px; 
+      border-radius:16px; 
+      border: 1px solid #e6e7ee;
+      transition:all 0.3s ease;
+      cursor:pointer;
+      position:relative;
+    }
+    .opp:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 20px rgba(15,23,36,0.1);
+      border-color:var(--indigo);
+    }
+    .opp-tags{
+      display:flex;
+      gap:6px;
+      margin-top:10px;
+      flex-wrap:wrap;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+    }
+    .opp:hover .opp-tags{
+      max-height:100px;
+    }
+    .tag{
+      padding:4px 10px;
+      background:#eef2ff;
+      color:var(--indigo);
+      border-radius:12px;
+      font-size:12px;
+      font-weight:600;
+    }
+    .opp .actions button{
+      transition:all 0.3s ease;
+    }
+    .opp .actions button:hover{
+      transform:scale(1.05);
+    }
+    .saved-badge{
+      position:fixed;
+      bottom:24px;
+      right:24px;
+      background:#10b981;
+      color:white;
+      padding:12px 20px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(16,185,129,0.3);
+      font-weight:600;
+      z-index:50;
+      animation:slideInUp 0.3s ease;
+      display:none;
+    }
+    .saved-badge.show{
+      display:block;
+    }
+    @keyframes slideInUp{
+      from{transform:translateY(100px); opacity:0}
+      to{transform:translateY(0); opacity:1}
+    }
+
+    /* Apply Drawer */
+    .apply-drawer{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:white;
+      border-top-left-radius:24px;
+      border-top-right-radius:24px;
+      box-shadow:0 -4px 20px rgba(15,23,36,0.15);
+      padding:24px;
+      z-index:100;
+      transform:translateY(100%);
+      transition:transform 0.3s ease;
+      max-height:80vh;
+      overflow-y:auto;
+    }
+    .apply-drawer.open{
+      transform:translateY(0);
+    }
+    .drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      z-index:99;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.3s ease;
+    }
+    .drawer-overlay.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .drawer-close{
+      position:absolute;
+      top:16px;
+      right:16px;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      border:0;
+      background:#f3f4f6;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .drawer-content h3{
+      margin:0 0 8px;
+      font-size:24px;
+    }
+    .drawer-meta{
+      color:var(--muted);
+      margin-bottom:20px;
+    }
+    .drawer-section{
+      margin-top:20px;
+    }
+    .drawer-section h4{
+      font-size:16px;
+      margin:0 0 12px;
+      font-weight:600;
+    }
+    .drawer-tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .apply-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--indigo);
+      color:white;
+      padding:12px 24px;
+      border-radius:12px;
+      font-weight:600;
+      margin-top:16px;
+    }
+    .email-template{
+      background:#f9fafb;
+      padding:16px;
+      border-radius:12px;
+      border:1px solid #e5e7eb;
+      font-size:14px;
+      line-height:1.6;
+      margin-top:12px;
+    }
+
+    /* Load More */
+    .load-more{
+      display:flex;
+      justify-content:center;
+      margin-top:24px;
+    }
+    .load-more button{
+      padding:12px 32px;
+      background:white;
+      border:2px solid var(--indigo);
+      color:var(--indigo);
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      font-size:14px;
+    }
+    .load-more button:hover{
+      background:var(--indigo);
+      color:white;
+    }
+
+    /* Filters */
+    .filters{
+      display:flex;
+      gap:12px;
+      margin:16px 0;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .filter-buttons{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .filter-btn{
+      padding:8px 16px;
+      border-radius:20px;
+      border:1px solid #e6e7ee;
+      background:white;
+      cursor:pointer;
+      font-size:14px;
+      transition:all 0.3s ease;
+      font-weight:500;
+    }
+    .filter-btn:hover{
+      border-color:var(--indigo);
+      background:#f5f3ff;
+    }
+    .filter-btn.active{
+      background:var(--indigo);
+      color:white;
+      border-color:var(--indigo);
+    }
+
+    /* CTA band */
+    .cta-band{
+      border-radius:14px; 
+      padding:20px; 
+      background:linear-gradient(90deg,var(--indigo),var(--purple)); 
+      color:white; 
+      margin-top:12px;
+    }
+    .cta-band .join{
+      background:white; 
+      color:var(--indigo); 
+      padding:10px 16px; 
+      border-radius:12px; 
+      font-weight:700; 
+      text-decoration:none;
+      transition:transform 0.3s ease;
+      display:inline-block;
+    }
+    .cta-band .join:hover{
+      transform:scale(1.05);
+    }
+
+    /* footer */
+    footer{
+      padding:0; 
+      color:var(--muted); 
+      font-size:14px;
+      background:#f5f5f5;
+      margin-top:60px;
+    }
+    .footer-wrapper{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+    .footer-bg{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+    }
+    .footer-logo-bg{
+      transform:translateY(45%);
+      margin-top:-22%;
+      width:100%;
+      height:100%;
+      opacity:0.1;
+      pointer-events:none;
+      mask:linear-gradient(0deg, rgba(0,0,0,0) 18%, #f5f5f5 129%);
+    }
+    .footer-grid{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:40px;
+      background:#f5f5f5;
+      padding-top:40px;
+      padding-bottom:20px;
+    }
+    .footer-brand{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      margin-top:-12px;
+    }
+    .footer-brand p{
+      font-size:15px;
+      color:#50576b;
+      line-height:1.5;
+      margin-top:4px;
+      max-width:256px;
+    }
+    .footer-links{
+      display:grid;
+      grid-template-columns:1fr 2fr;
+      gap:8px;
+      align-items:start;
+    }
+    .footer-col h4{
+      color:var(--text);
+      margin:0 0 16px;
+      font-weight:500;
+      font-size:16px;
+    }
+    .footer-col .links{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .footer-col .links a{
+      color:#50576b;
+      transition:all 0.3s ease;
+      font-size:15px;
+    }
+    
+    .footer-socials{
+      justify-self:center;
+    }
+    .footer-socials .links{
+      gap:12px;
+    }
+    .footer-socials .links a{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      color:#50576b;
+      text-decoration:none;
+    }
+    .footer-socials .links a:hover{
+      color:var(--text);
+      text-decoration:none;
+    }
+    .footer-newsletter h4{
+      color:var(--text);
+      margin:0 0 16px;
+      font-weight:500;
+      font-size:16px;
+    }
+    .footer-newsletter p{
+      font-size:15px;
+      color:#50576b;
+      line-height:1.5;
+      margin-bottom:16px;
+      max-width:384px;
+    }
+    .newsletter-form{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:white;
+      border-radius:9999px;
+      border:1px solid #e5e7eb;
+      padding:6px 6px 6px 12px;
+      width:100%;
+      max-width:448px;
+    }
+    .newsletter-form span{
+      color:#b0b0b0;
+      font-size:16px;
+    }
+    .newsletter-form input{
+      flex:1;
+      outline:none;
+      background:transparent;
+      font-size:16px;
+      color:#50576b;
+      border:0;
+      font-family:inherit;
+    }
+    .newsletter-form input::placeholder{
+      color:#9ca3af;
+    }
+    .newsletter-form button{
+      background:#0067F4;
+      color:white;
+      border-radius:9999px;
+      width:64px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:0;
+      cursor:pointer;
+      transition:background 0.3s ease;
+      flex-shrink:0;
+    }
+    .newsletter-form button:hover{
+      background:#0047A8;
+    }
+    .footer-bottom{
+      margin-top:40px;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      border-top:1px solid #e5e7eb;
+      padding:24px 0;
+      font-size:16px;
+      color:#50576b;
+    }
+    .footer-bottom p{
+      margin:0;
+    }
+    .footer-bottom-links{
+      display:flex;
+      justify-content:center;
+      gap:32px;
+      flex-wrap:wrap;
+    }
+    .footer-bottom-links a{
+      color:#50576b;
+      transition:all 0.3s ease;
+      font-size:15px;
+    }
+    
+    /* responsiveness */
+    @media (max-width:1100px){
+      .hero{grid-template-columns:1fr 420px}
+      .grid-4{grid-template-columns:repeat(2,1fr)}
+      .grid-4 .card-sm:nth-child(4){
+        grid-column: auto;
+      }
+    }
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr; gap:26px; padding:60px 0}
+      .card{transform:none}
+      .grid-3, .grid-4, .opps-grid{grid-template-columns:1fr}
+      .filters{gap:8px; flex-direction:column; align-items:stretch}
+      .filter-buttons{width:100%}
+      .filter-btn{padding:6px 12px; font-size:13px}
+      .load-more{width:100%; margin-top:0}
+      .load-more button{width:100%}
+    }
+    @media (min-width:768px){
+      .footer-grid{
+        grid-template-columns:1fr 1fr 1fr;
+      }
+      .footer-bottom{
+        flex-direction:row;
+        align-items:center;
+      }
+      .footer-bottom p{
+        text-align:left;
+        flex:1;
+      }
+      .footer-bottom-links{
+        flex:1;
+        justify-content:flex-end;
+      }
+    }
+    @media (min-width:1024px){
+      .footer-grid{
+        grid-template-columns:1fr 1.5fr 1fr;
+      }
+    }
+
+    /* small niceties */
+    .muted{color:var(--muted)}
+    .sm{font-size:13px}
+    .uppercase{text-transform:uppercase; letter-spacing:0.06em; font-weight:600; font-size:12px}
+  </style>
+</head>
+<body>
+  <header class="fixed">
+    <div class="header-wrapper">
+      <!-- Desktop logo - absolute positioned left -->
+      <a class="brand-desktop" href="#">
+        <div class="logo">M</div>
+        <div class="meta">
+          <div style="font-weight:700">Indianintern</div>
+              <!-- <div class="small">Desi CSE internships</div> -->
+        </div>
+      </a>
+
+      <!-- Center pill -->
+      <div class="header-inner">
+        <div class="header-content">
+          <!-- Mobile logo inside pill -->
+          <a class="brand" href="#">
+            <div class="logo">M</div>
+            <div class="meta">
+              <div style="font-weight:700">Indianintern</div>
+              <!-- <div class="small">Desi CSE internships</div> -->
+            </div>
+          </a>
+
+          <!-- Desktop navigation -->
+          <nav class="desktop" id="desktopNav">
+            <a href="#how" style="display:none">Services</a>
+            <a href="#how">How</a>
+            <a href="#opps">Our Work</a>
+            <a href="#prep">Achievements</a>
+            <a href="#faq">FAQs</a>
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <!-- Mobile menu toggle -->
+          <button aria-label="Open menu" class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu(event)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 19h16"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile menu dropdown -->
+        <div id="mobileMenu" style="display:none; border-top:1px solid rgba(15,23,36,0.04);">
+          <div style="padding:12px 16px; display:flex; flex-direction:column; gap:8px">
+            <a href="#how" style="padding:10px 8px">How</a>
+            <a href="#opps" style="padding:10px 8px">Opportunities</a>
+            <a href="#prep" style="padding:10px 8px">Prep</a>
+            <a href="#contact" style="padding:10px 8px">Contact</a>
+            <button class="btn ghost" style="width:140px; margin-top:6px">Sign in</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop CTA button - absolute positioned right -->
+      <div class="cta-desktop">
+        <button class="btn primary" onclick="location.hash='signin'">
+          Signup
+          <div class="btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="heroTitle">
+        <div>
+          <h1 id="heroTitle">Internships for Indian CSE students — simple, curated, desi.</h1>
+          <p>From Tier-2 towns to campus placements — step-by-step guidance, curated roles, and short project tracks that make your resume stand out.</p>
+
+          <div class="ctas">
+            <a class="cta-primary" href="#opps">Explore Opportunities</a>
+            <a class="cta-outline" href="#how">How it works</a>
+          </div>
+
+          <div class="hero-features" style="margin-top:18px">
+            <div class="feature-pill">Resume Templates</div>
+            <div class="feature-pill">Project Tracks</div>
+            <div class="feature-pill">Mock Interviews</div>
+          </div>
+
+          <div style="margin-top:14px; color:var(--muted); font-size:13px">Pro tip: Apply with a 2-line cold email + 1 relevant project link — examples available.</div>
+        </div>
+
+        <div class="card-wrap">
+          <div class="card" role="region" aria-label="Next cohort and top openings">
+            <div class="top">
+              <div>
+                <div class="sm muted">Next cohort</div>
+                <div class="cohort">Free Resume Audit — 15 Nov</div>
+              </div>
+              <div class="sm muted">Seats: 50</div>
+            </div>
+
+            <div id="jobsList" class="jobs-list" aria-live="polite">
+              <!-- JS will inject jobs here -->
+            </div>
+
+            <a class="see-all" href="#opps">See all</a>
+          </div>
+
+          <div class="glow-blob" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator" onclick="scrollToSection('how')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14"></path>
+          <path d="m19 12-7 7-7-7"></path>
+        </svg>
+      </div>
+
+      <!-- HOW -->
+      <section id="how" aria-labelledby="howTitle">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+          <div>
+            <h2 class="section-title" id="howTitle">How Indianintern helps</h2>
+            <div class="section-sub">Short, practical paths that lead to internships — not generic theory.</div>
+          </div>
+          
+        </div>
+
+        <div class="grid-4" style="margin-top:16px">
+          <div class="card-sm">
+            <div class="icon">🔍</div>
+            <div style="font-weight:700">Curated Roles</div>
+            <p>Verified internships for beginners — filter by location & stipend.</p>
+            <div class="card-expanded-content">
+              <ul class="checklist">
+                <li>Verified companies</li>
+                <li>No fake internship listings</li>
+                <li>Updated daily</li>
+              </ul>
+            </div>
+            <button class="view-examples-btn" onclick="showExamples('roles', event)">View Examples</button>
+          </div>
+          <div class="card-sm">
+            <div class="icon">🧩</div>
+            <div style="font-weight:700">Project Tracks</div>
+            <p>Micro-projects with README templates — build portfolio pieces fast.</p>
+            <div class="card-expanded-content">
+              <ul class="checklist">
+                <li>Step-by-step guides</li>
+                <li>Professional README templates</li>
+                <li>Deploy-ready projects</li>
+              </ul>
+            </div>
+            <button class="view-examples-btn" onclick="showExamples('projects', event)">View Examples</button>
+          </div>
+          <div class="card-sm">
+            <div class="icon">🎤</div>
+            <div style="font-weight:700">Interview Playbooks</div>
+            <p>STAR templates, sample cold emails, mock questions with solutions.</p>
+            <div class="card-expanded-content">
+              <ul class="checklist">
+                <li>STAR method templates</li>
+                <li>Common questions answered</li>
+                <li>Cold email scripts</li>
+              </ul>
+            </div>
+            <button class="view-examples-btn" onclick="showExamples('playbooks', event)">View Examples</button>
+          </div>
+          <div class="card-sm">
+            <div class="icon">🗺️</div>
+            <div style="font-weight:700">Skill Roadmaps</div>
+            <p>Clear, step-by-step learning paths for Web Dev, Data Science, AI/ML & Backend — know exactly what to learn before applying.</p>
+            <div class="card-expanded-content">
+              <ul class="checklist">
+                <li>Beginner-friendly learning paths</li>
+                <li>Tech-stack specific guidance</li>
+                <li>From basics to internship-ready</li>
+              </ul>
+            </div>
+            <button class="view-examples-btn" onclick="showExamples('roadmaps', event)">View Examples</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- OPPORTUNITIES -->
+      <section id="opps" aria-labelledby="oppsTitle">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px">
+          <h2 class="section-title" id="oppsTitle">Curated Opportunities</h2>
+        </div>
+
+        <div class="filters">
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all" onclick="filterJobs('all', this)">All</button>
+            <button class="filter-btn" data-filter="paid" onclick="filterJobs('paid', this)">Paid</button>
+            <button class="filter-btn" data-filter="unpaid" onclick="filterJobs('unpaid', this)">Unpaid</button>
+            <button class="filter-btn" data-filter="remote" onclick="filterJobs('remote', this)">Remote</button>
+            <button class="filter-btn" data-filter="onsite" onclick="filterJobs('onsite', this)">Onsite</button>
+          </div>
+          <div class="load-more">
+            <button onclick="loadMoreJobs()">Load More</button>
+          </div>
+        </div>
+
+        <div class="opps-grid" id="oppsGrid" style="margin-top:12px">
+          <!-- JS will inject opportunity cards -->
+        </div>
+      </section>
+
+      <!-- PREP -->
+      <section id="prep" aria-labelledby="prepTitle" style="background:linear-gradient(180deg,#fff,#f3f4ff); border-top-left-radius:24px; border-top-right-radius:24px; padding-top:28px">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+          <div>
+            <h2 class="section-title" id="prepTitle">Interview Prep — Desi, No-Fluff</h2>
+            <div class="section-sub">Micro-lessons: campus vs off-campus, behavioural STAR templates, short system-design for interns.</div>
+          </div>
+          <div class="load-more" style="margin-top:0">
+            <button onclick="window.location.href='interview-prep.html'">Read More</button>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:18px">
+          <div class="card-sm">
+            <div style="font-weight:700">Campus Interviews</div>
+            <p>80 MCQs + 10 coding problems.</p>
+          </div>
+          <div class="card-sm">
+            <div style="font-weight:700">Off-Campus</div>
+            <p>Cold-apply templates + outreach sequences.</p>
+          </div>
+          <div class="card-sm">
+            <div style="font-weight:700">Behavioural</div>
+            <p>STAR answers in Hinglish/English + example scripts.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA BAND -->
+      <section>
+        <div class="cta-band">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+            <div>
+              <div style="font-size:18px; font-weight:700">Ready to get your first internship?</div>
+              <div style="margin-top:6px; color:white">Join a cohort, share 1 project, get 3 applications reviewed.</div>
+            </div>
+            <div>
+              <a class="join" href="#">Join waitlist</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-wrapper">
+        <div class="footer-bg">
+          <!-- <div class="footer-logo-bg">
+            <div class="logo" style="width:100%;height:400px;margin:0 auto;opacity:0.15;background:linear-gradient(135deg,var(--indigo),var(--purple))"></div>
+          </div> -->
+          
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <a href="#">
+                <div class="logo" style="width:48px;height:48px">M</div>
+              </a>
+              <p>Strategic internship platform for CSE students — curated opportunities and career guidance.</p>
+            </div>
+
+            <div class="footer-links">
+              <div class="footer-col">
+                <h4>Company</h4>
+                <div class="links">
+                  <a href="#how">How</a>
+                  <a href="#opps">Opportunities</a>
+                  <a href="#prep">Prep</a>
+                  <a href="#faq">FAQs</a>
+                  <a href="#brand">Brand</a>
+                  <a href="#contact">Contact</a>
+                </div>
+              </div>
+
+              <div class="footer-col footer-socials">
+                <h4>Socials</h4>
+                <div class="links">
+                  <a href="mailto:team@indianintern.com" target="_blank" rel="noopener noreferrer">
+                    Email
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                      </svg>
+                    </span>
+                </a>
+                  <a href="https://linkedin.com/company/indianintern" target="_blank" rel="noopener noreferrer">
+                    Instagram
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                      </svg>
+                    </span>
+                  </a>
+                  <a href="https://linkedin.com/company/indianintern" target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                      </svg>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="footer-newsletter">
+              <h4>Newsletter</h4>
+              <p>Stay ahead with internship tips and strategies that drive results.</p>
+              <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
+                <span>@</span>
+                <input type="email" placeholder="Enter your email..." required />
+                <button type="submit" aria-label="Submit form">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <p>©<span id="yearFooter"></span> Indianintern All rights reserved</p>
+            <div class="footer-bottom-links">
+              <a href="#privacy">Privacy Policy</a>
+              <a href="#terms">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Saved Badge -->
+  <div class="saved-badge" id="savedBadge">Saved to your list ✔️</div>
+
+  <!-- Apply Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="apply-drawer" id="applyDrawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <div class="drawer-content" id="drawerContent"></div>
+  </div>
+
+  <script>
+    // ===== Data (converted from your React jobs array) =====
+    const jobs = [
+      { id: 1, title: "Frontend Intern (React)", company: "ChaiTech Labs", loc: "Remote", stipend: "₹8,000/mo" },
+      { id: 2, title: "ML Intern — CV", company: "Bengal AI", loc: "Hybrid, Kolkata", stipend: "Unpaid" },
+      { id: 3, title: "Backend Intern (Node)", company: "CampusX", loc: "Onsite, Pune", stipend: "₹6,000/mo" }
+    ];
+
+    // Render small jobs list in the hero card
+    const jobsList = document.getElementById('jobsList');
+    jobs.forEach(j => {
+      const li = document.createElement('div');
+      li.className = 'job';
+      li.innerHTML = `
+        <div>
+          <div style="font-weight:600; font-size:14px">${escapeHtml(j.title)}</div>
+          <div class="meta" style="margin-top:4px">${escapeHtml(j.company)} • ${escapeHtml(j.loc)}</div>
+        </div>
+        <div style="font-size:13px; color: #4b5563">${escapeHtml(j.stipend)}</div>
+      `;
+      jobsList.appendChild(li);
+    });
+
+    // Render opportunity cards
+    const oppsGrid = document.getElementById('oppsGrid');
+    jobs.forEach(j => {
+      const card = document.createElement('div');
+      card.className = 'opp';
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
+          <div>
+            <div style="font-weight:700">${escapeHtml(j.title)}</div>
+            <div class="muted" style="margin-top:6px; font-size:13px">${escapeHtml(j.company)} • ${escapeHtml(j.loc)}</div>
+          </div>
+          <div style="font-weight:600; color: #334155">${escapeHtml(j.stipend)}</div>
+        </div>
+        <p class="muted" style="margin-top:12px; font-size:14px">Short description — what you'll learn, tech stack, duration and how to apply.</p>
+        <div class="actions">
+          <button class="btn" style="background:#eef2ff; border-radius:10px; padding:8px 10px; font-weight:600; color:#4338ca">Save</button>
+          <button class="btn ghost" style="padding:8px 10px">Apply</button>
+        </div>
+      `;
+      oppsGrid.appendChild(card);
+    });
+
+    // small helpers
+    function toggleMobileMenu(e){
+      const menu = document.getElementById('mobileMenu');
+      menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
+    }
+
+    // set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // set current year in footer
+    document.getElementById('yearFooter').textContent = new Date().getFullYear();
+
+    // handle newsletter form submission
+    function handleNewsletterSubmit(e){
+      e.preventDefault();
+      const form = e.target;
+      const email = form.querySelector('input[type="email"]').value;
+      alert('Thanks for subscribing with: ' + email);
+      form.reset();
+    }
+
+    // escape for safety
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    // Scroll to section with proper offset
+    function scrollToSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if(el) {
+        const headerOffset = 100; // Account for fixed header
+        const elementPosition = el.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const target = a.getAttribute('href').slice(1);
+        if(!target) return;
+        const el = document.getElementById(target);
+        if(el){
+          e.preventDefault();
+          const headerOffset = 100;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.scrollY - headerOffset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior:'smooth'
+          });
+          // close mobile menu if open
+          const menu = document.getElementById('mobileMenu');
+          if(menu && menu.style.display === 'block') menu.style.display = 'none';
+        }
+      });
+    });
+
+    // Enhanced jobs data
+    const allJobs = [
+      { id: 1, title: "Frontend Intern (React)", company: "ChaiTech Labs", loc: "Remote", stipend: "₹8,000/mo", type: "paid", mode: "remote", tags: ["React", "JavaScript", "API"], duration: "3 months", skills: ["HTML", "CSS", "React", "REST API"] },
+      { id: 2, title: "ML Intern — CV", company: "Bengal AI", loc: "Hybrid, Kolkata", stipend: "Unpaid", type: "unpaid", mode: "hybrid", tags: ["Python", "TensorFlow", "CV"], duration: "6 months", skills: ["Python", "OpenCV", "Deep Learning"] },
+      { id: 3, title: "Backend Intern (Node)", company: "CampusX", loc: "Onsite, Pune", stipend: "₹6,000/mo", type: "paid", mode: "onsite", tags: ["Node.js", "MongoDB", "Express"], duration: "4 months", skills: ["Node.js", "Express", "MongoDB"] },
+      { id: 4, title: "Full Stack Intern", company: "TechStart", loc: "Remote", stipend: "₹10,000/mo", type: "paid", mode: "remote", tags: ["MERN", "Full Stack"], duration: "6 months", skills: ["React", "Node.js", "MongoDB"] },
+      { id: 5, title: "Data Science Intern", company: "DataCo", loc: "Hybrid, Bangalore", stipend: "₹7,000/mo", type: "paid", mode: "hybrid", tags: ["Python", "Pandas", "ML"], duration: "3 months", skills: ["Python", "Pandas", "Scikit-learn"] },
+      { id: 6, title: "UI/UX Design Intern", company: "DesignHub", loc: "Remote", stipend: "Unpaid", type: "unpaid", mode: "remote", tags: ["Figma", "UI", "UX"], duration: "2 months", skills: ["Figma", "Adobe XD", "Prototyping"] }
+    ];
+
+    let displayedJobs = 3;
+    let currentFilter = 'all';
+    let savedJobs = JSON.parse(localStorage.getItem('savedJobs') || '[]');
+
+    // Render jobs
+    function renderJobs(jobsToRender) {
+      const oppsGrid = document.getElementById('oppsGrid');
+      oppsGrid.innerHTML = '';
+      
+      jobsToRender.forEach(j => {
+        const card = document.createElement('div');
+        card.className = 'opp';
+        card.setAttribute('data-type', j.type);
+        card.setAttribute('data-mode', j.mode);
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
+            <div>
+              <div style="font-weight:700">${escapeHtml(j.title)}</div>
+              <div class="muted" style="margin-top:6px; font-size:13px">${escapeHtml(j.company)} • ${escapeHtml(j.loc)}</div>
+            </div>
+            <div style="font-weight:600; color: #334155">${escapeHtml(j.stipend)}</div>
+          </div>
+          <div class="opp-tags">
+            ${j.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+          </div>
+          <p class="muted" style="margin-top:12px; font-size:14px">Duration: ${j.duration} • Learn ${j.skills.slice(0,3).join(', ')}</p>
+          <div class="actions">
+            <button class="btn" style="background:#eef2ff; border-radius:10px; padding:8px 10px; font-weight:600; color:#4338ca" onclick="saveJob(${j.id}, event)">${savedJobs.includes(j.id) ? 'Saved ✓' : 'Save'}</button>
+            <button class="btn ghost" style="padding:8px 10px" onclick="openApplyDrawer(${j.id}, event)">Apply</button>
+          </div>
+        `;
+        oppsGrid.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderJobs(allJobs.slice(0, displayedJobs));
+
+    // Filter jobs
+    function filterJobs(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      let filtered = allJobs;
+      if (filter === 'paid') filtered = allJobs.filter(j => j.type === 'paid');
+      if (filter === 'unpaid') filtered = allJobs.filter(j => j.type === 'unpaid');
+      if (filter === 'remote') filtered = allJobs.filter(j => j.mode === 'remote');
+      if (filter === 'onsite') filtered = allJobs.filter(j => j.mode === 'onsite');
+      
+      renderJobs(filtered.slice(0, displayedJobs));
+    }
+
+    // Load more jobs
+    function loadMoreJobs() {
+      displayedJobs += 3;
+      let filtered = currentFilter === 'all' ? allJobs : 
+                     currentFilter === 'paid' ? allJobs.filter(j => j.type === 'paid') :
+                     currentFilter === 'unpaid' ? allJobs.filter(j => j.type === 'unpaid') :
+                     currentFilter === 'remote' ? allJobs.filter(j => j.mode === 'remote') :
+                     allJobs.filter(j => j.mode === 'onsite');
+      renderJobs(filtered.slice(0, displayedJobs));
+    }
+
+    // Save job
+    function saveJob(jobId, event) {
+      event.stopPropagation();
+      if (!savedJobs.includes(jobId)) {
+        savedJobs.push(jobId);
+        localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
+        
+        const badge = document.getElementById('savedBadge');
+        badge.classList.add('show');
+        setTimeout(() => badge.classList.remove('show'), 3000);
+        
+        event.target.textContent = 'Saved ✓';
+      }
+    }
+
+    // Open apply drawer
+    function openApplyDrawer(jobId, event) {
+      event.stopPropagation();
+      const job = allJobs.find(j => j.id === jobId);
+      
+      document.getElementById('drawerContent').innerHTML = `
+        <h3>${job.title}</h3>
+        <div class="drawer-meta">${job.company} • ${job.loc} • ${job.stipend}</div>
+        
+        <div class="drawer-section">
+          <h4>Required Skills</h4>
+          <div class="drawer-tags">
+            ${job.skills.map(s => `<span class="tag">${s}</span>`).join('')}
+          </div>
+        </div>
+        
+        <div class="drawer-section">
+          <h4>Duration</h4>
+          <p>${job.duration}</p>
+        </div>
+        
+        <div class="drawer-section">
+          <h4>Recommended Cold Email Template</h4>
+          <div class="email-template">
+            <strong>Subject:</strong> Application for ${job.title}<br><br>
+            Hi [Hiring Manager],<br><br>
+            I'm a CSE student interested in the ${job.title} role at ${job.company}. I've built projects using ${job.skills[0]} and ${job.skills[1]}.<br><br>
+            Portfolio: [Your Link]<br><br>
+            Best,<br>
+            [Your Name]
+          </div>
+        </div>
+        
+        <a class="apply-link" href="#">
+          Apply Now
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      `;
+      
+      document.getElementById('drawerOverlay').classList.add('open');
+      document.getElementById('applyDrawer').classList.add('open');
+    }
+
+    // Close drawer
+    function closeDrawer() {
+      document.getElementById('drawerOverlay').classList.remove('open');
+      document.getElementById('applyDrawer').classList.remove('open');
+    }
+
+    // Show examples
+    function showExamples(type, event) {
+      event.stopPropagation();
+      alert(`Showing examples for ${type}. (Add modal/drawer here)`);
+    }
+  </script>
+</body>
+</html>
