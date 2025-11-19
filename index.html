@@ -117,7 +117,7 @@
       font-weight:800; font-size:18px;
       box-shadow: 0 6px 20px rgba(99,102,241,0.12);
     }
-    .brand .meta{line-height:1}
+    .brand .meta{line-height:1; color:#0067f2; font: size 20px;}
     .brand .meta .small{font-size:12px; color:var(--muted)}
 
     nav.desktop{
@@ -652,13 +652,14 @@
       box-shadow:0 4px 20px rgba(15,23,36,0.06);
     }
     .footer-logo-bg{
-      transform:translateY(45%);
-      margin-top:-22%;
+      position: absolute;
+      top: 0;
+      left: 0;
       width:100%;
       height:100%;
-      opacity:0.1;
+      opacity:0.08;
       pointer-events:none;
-      mask:linear-gradient(0deg, rgba(0,0,0,0) 18%, #f5f5f5 129%);
+      z-index: 0;
     }
     .footer-grid{
       width:100%;
@@ -667,6 +668,8 @@
       gap:40px;
       padding-top:0;
       padding-bottom:20px;
+      position: relative;
+      z-index: 1;
     }
     .footer-brand{
       display:flex;
@@ -858,9 +861,9 @@
     <div class="header-wrapper">
       <!-- Desktop logo - absolute positioned left -->
       <a class="brand-desktop" href="#">
-        <div class="logo">M</div>
-        <div class="meta">
-          <div style="font-weight:700">Discretera</div>
+        <!-- <div class="logo">Discretera</div> -->
+        <div class="meta" style="color:#0067f2; font-size:19px;">
+          <div style="font-weight:700">DiscretEra</div>
               <!-- <div class="small">Desi CSE internships</div> -->
         </div>
       </a>
@@ -870,20 +873,19 @@
         <div class="header-content">
           <!-- Mobile logo inside pill -->
           <a class="brand" href="#">
-            <div class="logo">M</div>
-            <div class="meta">
-              <div style="font-weight:700">Discretera</div>
+            <!-- <div class="logo">DE</div> -->
+            <div class="meta" style="color:#0067f2;">
+              <div style="font-weight:700">DiscretEra</div>
               <!-- <div class="small">Desi CSE internships</div> -->
             </div>
           </a>
 
           <!-- Desktop navigation -->
           <nav class="desktop" id="desktopNav">
-            <a href="#how" style="display:none">Services</a>
+            <a href="#how" >PlayBook</a>
             <a href="#how">Roadmaps</a>
             <a href="#opps">Internships</a>
             <a href="#prep">Prep</a>
-            <a href="#faq">FAQs</a>
             <a href="#contact">Contact</a>
           </nav>
 
@@ -900,9 +902,10 @@
         <!-- Mobile menu dropdown -->
         <div id="mobileMenu" style="display:none; border-top:1px solid rgba(15,23,36,0.04);">
           <div style="padding:12px 16px; display:flex; flex-direction:column; gap:8px">
-            <a href="#how" style="padding:10px 8px">How</a>
-            <a href="#opps" style="padding:10px 8px">Opportunities</a>
+            <a href="#how" style="padding:10px 8px">PlayBook</a>
+            <a href="#opps" style="padding:10px 8px">Internships</a>
             <a href="#prep" style="padding:10px 8px">Prep</a>
+            <a href="#faq" style="padding:10px 8px">FAQs</a>
             <a href="#contact" style="padding:10px 8px">Contact</a>
             <button class="btn ghost" style="width:140px; margin-top:6px">Sign in</button>
           </div>
@@ -912,7 +915,7 @@
       <!-- Desktop CTA button - absolute positioned right -->
       <div class="cta-desktop">
         <button class="btn primary" onclick="location.hash='signin'">
-          Signup
+          Signin
           <div class="btn-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)">
               <path d="M5 12h14"></path>
@@ -929,7 +932,7 @@
       <!-- HERO -->
       <section class="hero" aria-labelledby="heroTitle">
         <div>
-          <h1 id="heroTitle">Internships for Indian CSE students — simple, curated, desi.</h1>
+          <h1 id="heroTitle">Internships for Indian CSE students — simple, curated, <br>desi.</h1>
           <p>From Tier-2 towns to campus placements — step-by-step guidance, curated roles, and short project tracks that make your resume stand out.</p>
 
           <div class="ctas">
@@ -982,7 +985,7 @@
       <section id="how" aria-labelledby="howTitle">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
           <div>
-            <h2 class="section-title" id="howTitle">How Discretera helps</h2>
+            <h2 class="section-title" id="howTitle">How DiscretEra helps</h2>
             <div class="section-sub">Don't have a degree from IIT? Build a portfolio that makes recruiters ignore your college name.</div>
           </div>
           
@@ -1000,7 +1003,6 @@
                 <li>Updated daily</li>
               </ul>
             </div>
-            <button class="view-examples-btn" onclick="showExamples('roles', event)">View Examples</button>
           </div>
           <div class="card-sm">
             <div class="icon">🧩</div>
@@ -1013,7 +1015,6 @@
                 <li>Deploy-ready projects</li>
               </ul>
             </div>
-            <button class="view-examples-btn" onclick="showExamples('projects', event)">View Examples</button>
           </div>
           <div class="card-sm">
             <div class="icon">🎤</div>
@@ -1026,7 +1027,6 @@
                 <li>Cold email scripts</li>
               </ul>
             </div>
-            <button class="view-examples-btn" onclick="showExamples('playbooks', event)">View Examples</button>
           </div>
           <div class="card-sm">
             <div class="icon">🗺️</div>
@@ -1039,7 +1039,6 @@
                 <li>From basics to internship-ready</li>
               </ul>
             </div>
-            <button class="view-examples-btn" onclick="showExamples('roadmaps', event)">View Examples</button>
           </div>
         </div>
       </section>
@@ -1116,14 +1115,14 @@
     <footer>
       <div class="footer-wrapper">
         <div class="footer-bg">
-          <!-- <div class="footer-logo-bg">
-            <div class="logo" style="width:100%;height:400px;margin:0 auto;opacity:0.15;background:linear-gradient(135deg,var(--indigo),var(--purple))"></div>
-          </div> -->
+          <div class="footer-logo-bg">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:120px;font-weight:800;color:#0067f2;letter-spacing:-0.02em;">#DISCRETERA</div>
+          </div>
           
           <div class="footer-grid">
             <div class="footer-brand">
               <a href="#">
-                <div class="logo" style="width:48px;height:48px">M</div>
+                <div style="font-size:20px; font-weight:700; color:#0067f2; margin-bottom:12px;">DiscretEra</div>
               </a>
               <p>Strategic internship platform for CSE students — curated opportunities and career guidance.</p>
             </div>
@@ -1132,15 +1131,12 @@
               <div class="footer-col">
                 <h4>Company</h4>
                 <div class="links">
-                  <a href="#how">How</a>
-                  <a href="#opps">Opportunities</a>
-                  <a href="#prep">Prep</a>
-                  <a href="#faq">FAQs</a>
-                  <a href="#brand">Brand</a>
-                  <a href="#contact">Contact</a>
+                  <a href="playbook.html">PlayBook</a>
+                  <a href="opportunities.html">Opportunities</a>
+                  <a href="interview-prep.html">Prep</a>
+                  <a href="contact.html">Contact</a>
                 </div>
               </div>
-
               <div class="footer-col footer-socials">
                 <h4>Socials</h4>
                 <div class="links">
@@ -1192,7 +1188,7 @@
           </div>
 
           <div class="footer-bottom">
-            <p>©<span id="yearFooter"></span> Discretera All rights reserved</p>
+            <p>©<span id="yearFooter"></span> DiscretEra All rights reserved</p>
             <div class="footer-bottom-links">
               <a href="#privacy">Privacy Policy</a>
               <a href="#terms">Terms of Service</a>
@@ -1245,7 +1241,10 @@
           <div style="font-weight:600; font-size:14px">${escapeHtml(j.title)}</div>
           <div class="meta" style="margin-top:4px">${escapeHtml(j.company)} • ${escapeHtml(j.loc)}</div>
         </div>
-        <div style="font-size:13px; color: #4b5563">${escapeHtml(j.stipend)}</div>
+        <div style="font-size:13px; text-align:right; line-height:1.3;">
+          <div style="color:#059669; font-weight:700;">${escapeHtml(j.stipend)}</div>
+          <div style="color:#0f1724; font-size:11px;">/month</div>
+        </div>
       `;
       jobsList.appendChild(li);
     });
@@ -1360,13 +1359,22 @@
         card.className = 'opp';
         card.setAttribute('data-type', j.type);
         card.setAttribute('data-mode', j.mode);
+        
+        // Split stipend amount and period
+        const stipendParts = j.stipend.split('/');
+        const amount = stipendParts[0] || j.stipend;
+        const period = stipendParts[1] ? '/' + stipendParts[1] : '';
+        
         card.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px">
             <div>
               <div style="font-weight:700">${escapeHtml(j.title)}</div>
               <div class="muted" style="margin-top:6px; font-size:13px">${escapeHtml(j.company)} • ${escapeHtml(j.loc)}</div>
             </div>
-            <div style="font-weight:600; color: #334155">${escapeHtml(j.stipend)}</div>
+            <div style="text-align:right; line-height:1.3;">
+              <div style="font-weight:700; color:#059669; font-size:14px;">${escapeHtml(amount)}</div>
+              ${period ? `<div style="color:#0f1724; font-size:11px;">${escapeHtml(period)}</div>` : ''}
+            </div>
           </div>
           <div class="opp-tags">
             ${j.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
