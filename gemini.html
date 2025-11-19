@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mentiby — Internships for Indian CSE students</title>
+  <style>
+    /* ===== SMOOTH SCROLL (LENIS) ===== */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    .lenis.lenis-smooth iframe { pointer-events: none; }
+
+    /* ===== VARIABLES ===== */
+    :root{
+      --bg: #ffffff;
+      --text: #0f1724;
+      --muted: #64748b;
+      
+      /* THEME: Purple/Indigo (Startup Vibe) */
+      --indigo: #4f46e5; 
+      --purple: #7c3aed;
+      
+      /* UX: Trust & Money Colors */
+      --success: #059669; /* Money Green */
+      --success-bg: #ecfdf5;
+      
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(0,0,0,0.06);
+      
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      line-height:1.5;
+      font-size:16px;
+    }
+    a{color:inherit; text-decoration:none}
+
+    /* ===== LAYOUT ===== */
+    .container{max-width:1200px; margin:0 auto; padding:0 24px}
+    
+    /* Header */
+    header.fixed{ position:fixed; left:0; right:0; top:16px; z-index:40; padding:0 8px; }
+    .header-wrapper{ display:flex; justify-content:center; align-items:center; position:relative; width:100%; }
+    
+    .brand-desktop{ position:absolute; left:20px; display:flex; align-items:center; gap:10px; height:48px; font-weight:700; font-size:18px; }
+    .logo-icon{ width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, var(--indigo), var(--purple)); color:white; display:flex; align-items:center; justify-content:center; font-weight:800; }
+
+    .header-inner{
+      background:rgba(255,255,255,0.9); backdrop-filter:blur(12px);
+      border-radius:99px; padding:6px 8px;
+      box-shadow: var(--shadow); border:1px solid rgba(0,0,0,0.05);
+      display:flex; align-items:center; justify-content:center;
+    }
+    nav.desktop{ display:flex; gap:4px; }
+    nav.desktop a{ 
+      padding:8px 20px; 
+      border-radius:24px; 
+      font-size:14px; 
+      font-weight:500; 
+      transition:all 0.3s ease;
+      color: var(--text);
+    }
+    nav.desktop a:hover{ 
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+      color: var(--indigo);
+      transform: translateY(-1px);
+    }
+
+    .cta-desktop{ position:absolute; right:20px; }
+    .btn{ padding:10px 20px; border-radius:99px; border:0; font-weight:600; font-size:14px; cursor:pointer; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px; }
+    .btn.primary{ background:#151619; color:white; box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+    .btn.primary:hover{ transform:translateY(-1px); background:#2a2c32; }
+
+    /* Mobile Header Elements */
+    .menu-toggle{ display:none; background:#f3f4f6; border:0; border-radius:50%; width:40px; height:40px; align-items:center; justify-content:center; cursor:pointer; }
+    .mobile-brand{ display:none; align-items:center; gap:8px; font-weight:700; }
+
+    /* ===== HERO (YOUR ORIGINAL DESIGN) ===== */
+    main{padding-top:100px}
+    .hero{display:grid; grid-template-columns:1fr 460px; gap:60px; align-items:center; padding:60px 0 100px}
+    
+    .hero h1{
+      font-size:42px; line-height:1.1; margin:0 0 16px; font-weight:800; letter-spacing:-0.02em;
+      background: -webkit-linear-gradient(135deg, #1e1e2e, #4f46e5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p{color:var(--muted); max-width:50ch; font-size:18px; margin-bottom:24px; line-height:1.6;}
+    
+    .hero-ctas{display:flex; gap:12px; align-items:center; margin-bottom:24px;}
+    .cta-hero{
+      background:linear-gradient(135deg, var(--indigo), var(--purple));
+      color:white; padding:12px 24px; border-radius:14px; font-weight:600;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4); transition:transform 0.2s;
+    }
+    .cta-hero:hover{ transform:translateY(-2px); }
+    .cta-outline{ padding:12px 24px; border:1px solid #e5e7eb; border-radius:14px; font-weight:600; }
+
+    .hero-features{display:flex; gap:10px; flex-wrap:wrap;}
+    .feature-pill{ background:#f5f3ff; border:1px solid #ede9fe; color:var(--indigo); padding:8px 16px; border-radius:99px; font-size:13px; font-weight:600; }
+
+    /* Hero Card */
+    .card-wrap{position:relative; perspective:1000px}
+    .hero-card{
+      background: linear-gradient(180deg,#ffffff,#fbfbfe);
+      border-radius:24px; padding:24px; 
+      box-shadow:0 20px 50px -12px rgba(79, 70, 229, 0.2);
+      border:1px solid rgba(255,255,255,0.8);
+      transform:rotate(-3deg); position:relative; z-index:2;
+      transition:transform 0.3s ease;
+    }
+    .hero-card:hover{ transform:rotate(0deg) scale(1.02); }
+
+    .hero-job{
+      background:white; border-radius:14px; padding:14px; 
+      display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.02);
+    }
+    .stipend-badge{ font-size:13px; font-weight:700; color:var(--success); background:var(--success-bg); padding:4px 8px; border-radius:6px; }
+    
+    .glow-blob{
+      position:absolute; right:-40px; bottom:-40px; width:180px; height:180px; 
+      border-radius:999px; z-index:1;
+      background:linear-gradient(135deg,#6366f1,#a855f7); 
+      opacity:0.25; filter:blur(40px);
+      animation: blob-bounce 6s infinite ease-in-out;
+    }
+    @keyframes blob-bounce { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-10px, -20px); } }
+
+    /* ===== SECTION STYLING ===== */
+    section {padding:60px 0}
+    .section-header{ margin-bottom:32px; }
+    .section-title{ font-size:28px; font-weight:800; letter-spacing:-0.01em; color: #0f1724; }
+    .section-sub{ color:var(--muted); font-size:16px; margin-top:8px; max-width:600px; }
+
+    /* ===== UX IMPROVED: HOW IT WORKS ===== */
+    .grid-3-features{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
+    .feature-card{
+      padding:24px; border-radius:20px; border:1px solid var(--border);
+      background:white; transition:all 0.3s ease; position:relative; overflow:hidden;
+    }
+    .feature-card:hover{
+      border-color:var(--indigo); transform:translateY(-4px);
+      box-shadow: 0 12px 30px -10px rgba(79, 70, 229, 0.15);
+    }
+    .feature-icon{ font-size:32px; margin-bottom:16px; display:block; }
+    .feature-card h3{ font-size:18px; font-weight:700; margin:0 0 10px 0; }
+    .feature-card p{ font-size:14px; color:var(--muted); line-height:1.6; margin:0; }
+
+    /* ===== UX IMPROVED: OPPORTUNITIES ===== */
+    .filters{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; align-items:center; justify-content:space-between; }
+    .filter-group{ display:flex; gap:8px; }
+    
+    .filter-chip{
+      padding:8px 16px; border-radius:99px; border:1px solid var(--border);
+      background:white; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.2s;
+    }
+    .filter-chip:hover{ border-color:var(--indigo); color:var(--indigo); background:#f5f3ff; }
+    .filter-chip.active{ background:var(--indigo); color:white; border-color:var(--indigo); }
+
+    .opps-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
+    
+    .opp-card{
+      background:white; border:1px solid var(--border); border-radius:16px; padding:20px;
+      transition:all 0.2s; display:flex; flex-direction:column; position:relative;
+    }
+    .opp-card:hover{ border-color:var(--indigo); box-shadow:0 8px 24px rgba(0,0,0,0.06); transform:translateY(-2px); }
+    
+    .opp-header{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+    .opp-role{ font-weight:700; font-size:16px; color:#0f1724; line-height:1.3; }
+    .opp-company{ font-size:13px; color:var(--muted); margin-top:4px; }
+    
+    /* UX Emphasis: Stipend is distinct */
+    .opp-stipend{ font-weight:700; color:var(--success); background:var(--success-bg); padding:4px 10px; border-radius:8px; font-size:13px; white-space:nowrap; }
+    
+    .opp-desc{ font-size:14px; color:#475569; line-height:1.5; margin-bottom:16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    
+    .opp-tags{ display:flex; gap:6px; flex-wrap:wrap; margin-top:auto; padding-top:16px; margin-bottom:16px; }
+    .tag{ font-size:11px; padding:4px 8px; border-radius:6px; background:#f3f4f6; color:#475569; font-weight:600; }
+    
+    .btn-full{ width:100%; padding:10px; justify-content:center; background:var(--indigo); color:white; border-radius:10px; font-weight:600; border:0; cursor:pointer; transition:background 0.2s; }
+    .btn-full:hover{ background:#4338ca; }
+
+    /* Drawer */
+    .drawer-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+    .drawer-overlay.open{ opacity:1; pointer-events:auto; }
+    .apply-drawer{
+      position:fixed; bottom:0; left:0; right:0; background:white; border-radius:24px 24px 0 0;
+      padding:32px; z-index:100; transform:translateY(100%); transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height:85vh; overflow-y:auto; max-width:700px; margin:0 auto;
+    }
+    .apply-drawer.open{ transform:translateY(0); }
+
+    /* Footer */
+    footer{ background:#f8fafc; padding:60px 0 30px; margin-top:60px; border-top:1px solid var(--border); color:var(--muted); font-size:14px; }
+    .footer-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:40px; }
+    .footer-bottom{ margin-top:40px; border-top:1px solid var(--border); padding-top:24px; display:flex; justify-content:space-between; }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero{ grid-template-columns:1fr; text-align:center; padding-top:40px; }
+      .hero p{ margin:0 auto 24px; }
+      .hero-ctas, .hero-features{ justify-content:center; }
+      .hero-card{ transform:rotate(0deg); margin-top:40px; }
+      
+      .grid-3-features, .opps-grid{ grid-template-columns:1fr; }
+      .brand-desktop, .cta-desktop, nav.desktop{ display:none; }
+      .menu-toggle, .mobile-brand{ display:flex; }
+      .header-inner{ justify-content:space-between; width:100%; border-radius:16px; }
+      .footer-grid{ grid-template-columns:1fr; }
+      .filters{ flex-direction:column; align-items:stretch; }
+      .filter-group{ overflow-x:auto; padding-bottom:8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="fixed">
+    <div class="header-wrapper">
+      <a href="#" class="brand-desktop">
+        <div class="logo-icon">M</div> Mentiby
+      </a>
+
+      <div class="header-inner">
+        <a href="#" class="mobile-brand">
+          <div class="logo-icon" style="width:32px; height:32px; font-size:16px">M</div> Mentiby
+        </a>
+
+        <nav class="desktop">
+          <a href="#how">Roadmaps</a>
+          <a href="#opps">Internships</a>
+          <a href="#prep">Prep</a>
+        </nav>
+
+        <button class="menu-toggle" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+
+      <div class="cta-desktop">
+        <button class="btn primary">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <section class="hero">
+      <div>
+        <h1 id="heroTitle">Internships for Indian CSE students — simple, curated, desi.</h1>
+        <p>From Tier-2 towns to campus placements — step-by-step guidance, curated roles, and short project tracks that make your resume stand out.</p>
+
+        <div class="hero-ctas">
+          <a class="cta-hero" href="#opps">Explore Opportunities</a>
+          <a class="cta-outline" href="#how">How it works</a>
+        </div>
+
+        <div class="hero-features">
+          <div class="feature-pill">Resume Templates</div>
+          <div class="feature-pill">Project Tracks</div>
+          <div class="feature-pill">Mock Interviews</div>
+        </div>
+
+        <div style="margin-top:16px; color:var(--muted); font-size:13px; display:flex; align-items:center; gap:6px;">
+           <span style="background:var(--success-bg); color:var(--success); font-weight:700; padding:2px 6px; border-radius:4px; font-size:11px">PRO TIP</span>
+           Apply with a 2-line cold email + 1 relevant project link.
+        </div>
+      </div>
+
+      <div class="card-wrap">
+        <div class="hero-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div style="font-weight:700; font-size:15px">Next Cohort</div>
+            <div style="font-size:12px; color:var(--muted)">Seats: 50</div>
+          </div>
+
+          <div class="jobs-list">
+             <div class="hero-job">
+               <div>
+                 <div style="font-weight:700; font-size:14px">Frontend Intern</div>
+                 <div style="font-size:12px; color:var(--muted)">ChaiTech • Remote</div>
+               </div>
+               <div class="stipend-badge">₹8,000/mo</div>
+             </div>
+             <div class="hero-job">
+               <div>
+                 <div style="font-weight:700; font-size:14px">ML Intern</div>
+                 <div style="font-size:12px; color:var(--muted)">Bengal AI • Kolkata</div>
+               </div>
+               <div class="stipend-badge" style="background:#f3f4f6; color:var(--muted)">Unpaid</div>
+             </div>
+          </div>
+
+          <a href="#opps" style="display:block; text-align:center; padding:12px; border-radius:12px; border:1px dashed #c7d2fe; margin-top:16px; font-size:13px; font-weight:600; color:var(--indigo); background:#eef2ff;">See all 140+ Verified Roles</a>
+        </div>
+        <div class="glow-blob"></div>
+      </div>
+    </section>
+
+
+    <section id="how">
+      <div class="section-header">
+        <h2 class="section-title">Build Proof of Work</h2>
+        <p class="section-sub">Don't have a degree from IIT? Build a portfolio that makes recruiters ignore your college name.</p>
+      </div>
+      
+      <div class="grid-3-features">
+        <div class="feature-card">
+          <span class="feature-icon">🛠️</span>
+          <h3>Project Tracks</h3>
+          <p>Forget "To-Do List" apps. Build complex systems like URL Shorteners, Redis clones, or Chat apps with our step-by-step guides.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📩</span>
+          <h3>Cold Email Scripts</h3>
+          <p>Copy-paste templates to DM founders on Twitter/LinkedIn. We teach you how to sound professional, not desperate.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📄</span>
+          <h3>ATS Resumes</h3>
+          <p>LaTex templates designed to pass automated screeners (ATS) used by 90% of Indian startups and MNCs.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="opps">
+      <div class="section-header">
+        <h2 class="section-title">Curated Opportunities</h2>
+        <p class="section-sub">Verified roles. No unpaid labor scams. We prioritize opportunities that offer mentorship and growth.</p>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <button class="filter-chip active" onclick="filterJobs('all', this)">All Roles</button>
+          <button class="filter-chip" onclick="filterJobs('frontend', this)">Frontend</button>
+          <button class="filter-chip" onclick="filterJobs('backend', this)">Backend</button>
+          <button class="filter-chip" onclick="filterJobs('high-pay', this)">High Stipend (>10k)</button>
+        </div>
+        <button class="btn" style="border:1px solid var(--border); background:white; color:var(--text)">Load More</button>
+      </div>
+
+      <div class="opps-grid" id="jobsGrid">
+        </div>
+    </section>
+
+    <footer>
+      <div class="container footer-grid">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#0f1724; margin-bottom:16px;">
+            <div class="logo-icon" style="width:28px; height:28px; font-size:14px">M</div> Mentiby
+          </div>
+          <p style="line-height:1.6">Helping Tier-2/3 students break into product startups with curated internships and career guidance.</p>
+        </div>
+        <div>
+          <h4 style="color:#0f1724; margin:0 0 16px">Resources</h4>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="#">Resume Builder</a>
+            <a href="#">Cold Email Generator</a>
+            <a href="#">Salary Guide 2025</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="color:#0f1724; margin:0 0 16px">Legal</h4>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>© 2025 Mentiby. All rights reserved.</p>
+        <div style="display:flex; gap:20px">
+          <a href="#">Twitter</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="apply-drawer" id="drawer">
+    <button onclick="closeDrawer()" style="position:absolute; top:20px; right:20px; border:none; background:#f3f4f6; width:32px; height:32px; border-radius:50%; cursor:pointer">✕</button>
+    <div id="drawerContent"></div>
+  </div>
+
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script> 
+  <script>
+    // 1. Smooth Scroll
+    const lenis = new Lenis({ autoRaf: true });
+
+    // 2. Job Data (UX Improved Structure)
+    const jobs = [
+      { id: 1, role: "Frontend Engineer Intern", company: "Zomato (Clone Team)", loc: "Remote", stipend: "₹15,000", tags: ["React", "Next.js"], type: "frontend", desc: "Work on the core ordering flow. You will learn state management and performance optimization." },
+      { id: 2, role: "Backend Developer", company: "CredFlow", loc: "Bangalore", stipend: "₹25,000", tags: ["Node.js", "AWS"], type: "backend", desc: "Build scalable APIs for fintech products. Experience with MongoDB is a plus." },
+      { id: 3, role: "Flutter Intern", company: "Khatabook", loc: "Bangalore", stipend: "₹20,000", tags: ["Flutter", "Dart"], type: "frontend", desc: "Assist in migrating the legacy codebase to the new Flutter architecture." },
+      { id: 4, role: "Data Science Intern", company: "BlueLearn", loc: "Remote", stipend: "₹10,000", tags: ["Python", "Pandas"], type: "data", desc: "Analyze user growth data and build visualization dashboards." },
+      { id: 5, role: "Growth Engineer", company: "Mentiby", loc: "Pune", stipend: "₹12,000", tags: ["Marketing", "React"], type: "frontend", desc: "Build landing pages and A/B test growth strategies." },
+      { id: 6, role: "Full Stack Intern", company: "SuperDaily", loc: "Gurgaon", stipend: "₹18,000", tags: ["MERN"], type: "backend", desc: "Full ownership of the internal admin dashboard." },
+    ];
+
+    const jobsGrid = document.getElementById('jobsGrid');
+
+    // 3. Render Functions (New Card Design)
+    function renderJobs(data) {
+      jobsGrid.innerHTML = '';
+      data.forEach(job => {
+        const div = document.createElement('div');
+        div.className = 'opp-card';
+        div.innerHTML = `
+          <div class="opp-header">
+            <div>
+              <div class="opp-role">${job.role}</div>
+              <div class="opp-company">${job.company} • ${job.loc}</div>
+            </div>
+            <div class="opp-stipend">${job.stipend}</div>
+          </div>
+          <div class="opp-desc">${job.desc}</div>
+          <div class="opp-tags">
+            ${job.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+          <button class="btn-full" onclick="openDrawer(${job.id})">View Details</button>
+        `;
+        jobsGrid.appendChild(div);
+      });
+    }
+    
+    // Initial Load
+    renderJobs(jobs);
+
+    // 4. Filter Logic
+    window.filterJobs = (filter, btn) => {
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      if(filter === 'all') return renderJobs(jobs);
+      if(filter === 'high-pay') {
+        const highPay = jobs.filter(j => parseInt(j.stipend.replace(/[^0-9]/g, '')) > 12000);
+        return renderJobs(highPay);
+      }
+      renderJobs(jobs.filter(j => j.type === filter));
+    }
+
+    // 5. Drawer Logic
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+    const content = document.getElementById('drawerContent');
+
+    window.openDrawer = (id) => {
+      const job = jobs.find(j => j.id === id);
+      content.innerHTML = `
+        <div style="margin-bottom:24px">
+           <div class="opp-stipend" style="display:inline-block; margin-bottom:8px">${job.stipend} / month</div>
+           <h2 style="margin:0 0 8px; font-size:24px; color:#0f1724">${job.role}</h2>
+           <p style="color:var(--muted); margin:0">${job.company} • ${job.loc} • Posted 2 days ago</p>
+        </div>
+        <hr style="border:0; border-top:1px solid var(--border); margin:20px 0">
+        <h4 style="margin-bottom:12px; color:#0f1724">About the role</h4>
+        <p style="color:#475569; font-size:15px; line-height:1.6; margin-bottom:24px">
+          ${job.desc} This is a great opportunity for freshers to learn ${job.tags.join(' and ')} in a production environment. 
+        </p>
+        <h4 style="margin-bottom:12px; color:#0f1724">Recommended Cold Email</h4>
+        <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px dashed #cbd5e1; font-size:14px; color:#334155; margin-bottom:24px">
+          "Hi [Hiring Manager], I saw the ${job.role} opening. I have built 2 projects using ${job.tags[0]} (link attached). Would love to chat."
+        </div>
+        <button class="btn-full" style="font-size:16px; padding:14px;">Apply Now</button>
+      `;
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+    }
+
+    window.closeDrawer = () => {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+  </script>
+</body>
+</html>
